@@ -1,0 +1,9 @@
+* {
+    font-family: arial, sans-serif;
+}
+
+input {
+    padding: 5px;
+    width: 300px;
+    font-size: 1em;
+}

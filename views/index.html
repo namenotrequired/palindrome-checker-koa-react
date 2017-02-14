@@ -1,0 +1,140 @@
+<html>
+<head>
+    <title>Palindrome</title>
+    <link rel="stylesheet" type="text/css" href="/styles/style.css">
+
+</head>
+<body>
+
+<div id="page"></div>
+
+
+<script src="https://unpkg.com/react@latest/dist/react.js"></script>
+<script src="https://unpkg.com/react-dom@latest/dist/react-dom.js"></script>
+<script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+<script type="text/babel">
+
+/*
+    The form elements
+ */
+
+var Result = React.createClass({
+    render: function() {
+        return (
+            <p>
+                {this.props.hasError ?
+                    'Error' :
+                    (this.props.isPalindrome ?
+                        'Yes' :
+                        'No'
+                    )
+                }
+            </p>
+        );
+    },
+});
+
+var Input = React.createClass({
+    render: function() {
+        return (
+            <input type="text" placeholder="Live not on evil." autoFocus
+                onInput={this.props.setIsPalindrome} />
+        );
+    },
+});
+
+/*
+    Core: the form incl GET request
+ */
+
+var Form = React.createClass({
+    getInitialState: function() {
+        return {
+            isPalindrome: true,
+            hasError: false
+        };
+    },
+    setIsPalindrome: function(e) {
+        var phrase = e.target.value;
+        // Spaces can cause issues in API call and don't matter for the
+        // palindrome check, so we leave them out
+        phrase = phrase.replace(/ /g, '');
+
+        // Avoid GET calls without params
+        if (phrase === '') {
+            this.setState({
+                isPalindrome: true,
+                hasError: false
+            });
+            return;
+        }
+
+        // Get API response
+        fetch('/check/' + phrase, {
+            method: 'get'
+        })
+        .then((response) => {
+            return response.json();
+        })
+        .then((data) => {
+            // If response data is right...
+            if (data.phrase !== phrase) {
+                this.setState({
+                    hasError: true
+                });
+                return;
+            }
+
+            // ...update the state
+            this.setState({
+                isPalindrome: data.isPalindrome,
+                hasError: false
+            });
+        })
+        .catch((err) => {
+            console.error(err);
+            this.setState({
+                hasError: true
+            });
+        });
+    },
+    render: function() {
+        return (
+            <form>
+                <Input setIsPalindrome={this.setIsPalindrome} />
+
+                <Result
+                    hasError={this.state.hasError}
+                    isPalindrome={this.state.isPalindrome} />
+
+            </form>
+        );
+    },
+});
+
+/*
+    Render on the page
+ */
+
+var Page = React.createClass({
+    render: function() {
+        return (
+            <div>
+                <h1>{{title}}</h1>
+
+                <p>Write a word, phrase or sentence and I will tell you if it is a palindrome.</p>
+
+                <Form />
+
+            </div>
+        );
+    },
+});
+
+ReactDOM.render(
+  <Page />,
+  document.getElementById('page')
+);
+</script>
+</body>
+</html>
