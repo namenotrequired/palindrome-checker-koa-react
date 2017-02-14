@@ -1,6 +1,5 @@
 {
-  "name": "palindrome",
-  "private": true,
+  "name": "palindrome checker",
   "version": "0.1.0",
   "main": "bin/run",
   "dependencies": {
