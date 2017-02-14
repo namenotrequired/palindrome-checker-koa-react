@@ -13,11 +13,6 @@ router.get('/', async (ctx, next) => {
     });
 });
 
-
-router.get('/public/styles/style.css', (ctx, next) => {
-    ctx.render('/public/styles/style.css');
-});
-
 /*
     API
  */

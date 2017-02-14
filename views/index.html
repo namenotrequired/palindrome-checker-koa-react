@@ -1,13 +1,18 @@
+<!-- HTML -->
+
 <html>
 <head>
     <title>Palindrome</title>
     <link rel="stylesheet" type="text/css" href="/styles/style.css">
-
 </head>
 <body>
 
 <div id="page"></div>
 
+</body>
+</html>
+
+<!-- JavaScript: here we build the page with React -->
 
 <script src="https://unpkg.com/react@latest/dist/react.js"></script>
 <script src="https://unpkg.com/react-dom@latest/dist/react-dom.js"></script>
@@ -57,7 +62,7 @@ var Form = React.createClass({
     setIsPalindrome: function(e) {
         var phrase = e.target.value;
         // Spaces can cause issues in API call and don't matter for the
-        // palindrome check, so we leave them out
+        // palindrome check, so we take them out
         phrase = phrase.replace(/ /g, '');
 
         // Avoid GET calls without params
@@ -136,5 +141,3 @@ ReactDOM.render(
   document.getElementById('page')
 );
 </script>
-</body>
-</html>
